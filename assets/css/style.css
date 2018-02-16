@@ -1,0 +1,15 @@
+.container {
+    margin-top: 10%;
+}
+
+#start {
+    width: 200px;
+    line-height: 40px;
+    font-size: 30px;
+    background-color: orange;
+    color: white;
+    text-shadow: 2px 2px dimgrey;
+    box-shadow: 3px 3px lightblue;
+    display: block;
+    margin: auto;
+}
