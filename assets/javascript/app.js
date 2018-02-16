@@ -2,6 +2,15 @@ $(document).ready(function() {
 
     var myQuestions = [
         {
+            question : "What is Gintamas go-to weapon of choice?",
+            options : [
+                "His fists", "Pistol", "A wooden sword", "Rubber duck"
+            ],
+            ansVal : 2,
+            answer : 'A wodden Sword',
+            gif : "assets/images/gintama.gif"
+        },
+        {
             question : "In Naruto episode #53, who removes Naruto's 5 Elements Seal?",
             options : [
                 "Sasuke", "Jiraiya", "The 4th Hokage", "Goku"
@@ -65,29 +74,38 @@ $(document).ready(function() {
             gif : "assets/images/sasuke.gif",
         },
         {
-            question : "dragonball question?",
+            question : "Who's that pokemon?<img src='assets/images/dragonair.jpg' width='500px' height='500px'>",
             options : [
-                "Apples", "Oranges", "Kittens", "Tacos"
+                "Dratini", "Snorelax", "Mew", "Dragonair"
             ],
-            ansVal : 0,
-            answer : "Apples",
-            gif : "assets/images/dragonball.gif",
+            ansVal : 3,
+            answer : "Dragonair",
+            gif : "assets/images/dragonair.gif",
         },
         {
-            question : "some other question",
+            question : "In 'HunterXHunter', what is Hisoka's Nen ability?",
             options : [
-
+                    "Flight", "Lizard Tongue", "Bungee Gum", "Love"
             ],
-            ansVal : 0,
-            answer : "whatever",
-            gif : "assets/images/someotherthing.gif"
+            ansVal : 2,
+            answer : "Bungee Gum",
+            gif : "assets/images/hisoka.gif"
         },
+        {
+            question : "What is Naruto's favorite food?",
+            options : [
+                "Hot Cheetos", "Nori", "Fish", "Ramen"
+            ],
+            ansVal : 3,
+            answer : "Ramen from Ramen Ichiraku",
+            gif : "assets/images/ramen.gif"
+        }
     ]
 
     var userGuess = ''
-    var correctAns = 0
-    var wrongAns = 0
-    var totalAns = $(".totalans")
+    var correctAns;
+    var wrongAns;
+    var totalAns;
     var timer = 15
     var interval;
     var timerOn = false
@@ -95,12 +113,20 @@ $(document).ready(function() {
     var activeQuest;
     var randQuest;
     var nextQTime;
+    var usedQuest = []
     $("#nextQ").hide()
     $("#reset").hide()
     //create timer
 
     //start game on button click
     $("#start").on("click", function() {
+        totalAns = 0
+        $(".totalans").html(totalAns)
+        correctAns = 0
+        $("#correctans").empty()
+        wrongAns = 0
+        $("#wrongans").empty()
+        $(".options").empty()
         //hides start button
         $("#start").hide('fast')
         //shows next question button
@@ -110,28 +136,50 @@ $(document).ready(function() {
         //starts timer at 15 seconds
         startTimer()
         // console.log("chao")
+        newArray = []
         //goes through all questions
         for(var i = 0; i < myQuestions.length; i++) {
             holder.push(myQuestions)
         }
 
         $("#nextQ").on("click", function() {
+            wrongAns++
             $("#nextQ").show('fast')
             $("#gifImage").empty()
             $("#answerblock").empty()
+            $("#myanswer").empty()
             showQuestion()
-            timer = 15
-            startTimer()
+
             return
+            if (totalAns === 0) {
+                stopTimer()
+                $("#timer").empty()
+                $("#start").show('fast')
+                $(".totalans").empty()
+                $("#question").empty()
+                $("#myanswer").empty()
+                $("#gifImage").empty()
+                $("#answerblock").empty()
+                $("#nextQ").hide('1000')
+                $("#correctans").html("Correct Answers: " + correctAns)
+                $("#wrongans").html("Wrong Answers: " + wrongAns)
+                $(".options").html("PLAY AGAIN!")
+            }
         })
 
         function showQuestion () {
-            $("#myanswer").empty()
-
+            timer = 15
+            startTimer()
+            $("#nextQ").show('1000')
+            totalAns++
+            $(".totalans").html("Question #" + totalAns)
             //chooses random question from questions array
             randQuest = Math.floor(Math.random() * myQuestions.length)
             // console.log(randQuest)
             activeQuest = myQuestions[randQuest]
+            for(var i = 0; i < myQuestions.length; i++) {
+                holder.push(myQuestions)
+            }
             //active question shows up inside questions id
             $("#question").html("<h2>" + activeQuest.question + "</h2>")
                 // console.log("quest")
@@ -157,46 +205,67 @@ $(document).ready(function() {
                     //run function stop timer
                     stopTimer()
                     correctAns++
-                    totalAns++
-                    userGuess= ''
+                    userGuess= ''                    
+                    $("#nextQ").hide('1000')
                     $("#myanswer").html("<h3>Correct!</h3>")
                     $("#gifImage").html("<img src='"+ activeQuest.gif + "' >")
-                    $("#answerblock").empty()
-                    return
+                    $("#answerblock").empty()                    
+                    //set timeout only if they don't press next question
+                    setTimeout (function (){
+                        $("#gifImage").empty()
+                        $("#answerblock").empty()
+                        $("#myanswer").empty()
+                        showQuestion()
+                        return
+                },4000)
                 }
     
                 else {
                     stopTimer()
                     wrongAns++
-                    totalAns++
                     userGuess= ''
+                    $("#nextQ").hide('1000')
                     $("#myanswer").html("<h3>Wrong! The right answer was '"+ activeQuest.answer + "</h3>")
                     $("#gifImage").html("<img src='"+ activeQuest.gif + "' >")
                     $("#answerblock").empty()
+                    setTimeout (function (){
+                        $("#gifImage").empty()
+                        $("#answerblock").empty()
+                        $("#myanswer").empty()
+                        showQuestion()
+                        return
+                },4000)
                 }
             })
             
-            if (totalAns === 10) {
+            if (totalAns === 11) {
                 stopTimer()
-                $("#wrongAns").html(wrongAns)
-                $("#correctAns").html(correctAns)
-            }
-
-            $("#reset").on("click", function() {
-                $("#reset").hide('fast')
+                $("#timer").empty()
                 $("#start").show('fast')
+                $(".totalans").empty()
                 $("#question").empty()
                 $("#myanswer").empty()
                 $("#gifImage").empty()
-                correctAns = 0
-                wrongAns = 0
-                // totalAns = 0
-                for (var i =0; i < holder.length; i++) {
-                    myQuestions.push(holder[i])
-                }
-            })
+                $("#answerblock").empty()
+                $("#nextQ").hide('1000')
+                $("#correctans").html("Correct Answers: " + correctAns)
+                $("#wrongans").html("Wrong Answers: " + wrongAns)
+                $(".options").html("PLAY AGAIN!")
+            }
+
+            // $("#reset").on("click", function() {
+            //     $("#reset").hide('fast')
+            //     $("#start").show('fast')
+            //     $("#question").empty()
+            //     $("#myanswer").empty()
+            //     $("#gifImage").empty()
+            //     correctAns = 0
+            //     wrongAns = 0
+            //     for (var i =0; i < holder.length; i++) {
+            //         myQuestions.push(holder[i])
+            //     }
+            // })
         }
-        // console.log(totalAns)
     })
 
 
@@ -207,8 +276,11 @@ $(document).ready(function() {
         if (timer === 0) {
             wrongAns++
             stopTimer()
+            $("#nextQ").show('1000')
+            $("#answerblock").empty()
             $("#myanswer").html("<p>Your Time is up! The answer was : " + activeQuest.answer + "</p>")
             ///show gif
+            $("#gifImage").html("<img src='"+ activeQuest.gif + "' >")
             console.log(activeQuest.answer)
         }
     }
