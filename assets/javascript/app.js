@@ -26,17 +26,68 @@ $(document).ready(function() {
             ],
             ansVal : 1,
             answer : 'All for One',
-            gif: "assets/images/myhero.gif",
+            gif : "assets/images/myhero.gif",
         },
         {
-            question: ""
-        }
+            question : "In 'DeathNote', what is Ryuk's favorite snack?",
+            options : [
+                "Apples", "Oranges", "Kittens", "Tacos"
+            ],
+            ansVal : 0,
+            answer : "Apples",
+            gif : "assets/images/deathnote.gif",
+        },
+        {
+            question : "Inuyasha is half human and half ______ -demon.",
+            options : [
+                "Bird", "Wolf", "Cat", "Dog"
+            ],
+            ansVal : 3,
+            answer : "Dog",
+            gif : "assets/images/inuyasha.gif",
+        },
+        {
+            question : "In 'Attack on Titan', how did Erin's mom dye?",
+            options : [
+                "She was eaten", "She ate bad meat", "She didn't", "Nobody Knows"
+            ],
+            ansVal : 0,
+            answer : "She was eaten",
+            gif : "assets/images/attack.gif",
+        },
+        {
+            question : "In Naruto, who does Sakura have a crush on?",
+            options : [
+                "Naruto", "Sasuke", "Kora", "Inuyasha"
+            ],
+            ansVal : 1,
+            answer : "Sasuke",
+            gif : "assets/images/sasuke.gif",
+        },
+        {
+            question : "dragonball question?",
+            options : [
+                "Apples", "Oranges", "Kittens", "Tacos"
+            ],
+            ansVal : 0,
+            answer : "Apples",
+            gif : "assets/images/dragonball.gif",
+        },
+        {
+            question : "some other question",
+            options : [
+
+            ],
+            ansVal : 0,
+            answer : "whatever",
+            gif : "assets/images/someotherthing.gif"
+        },
     ]
 
     var userGuess = ''
     var correctAns = 0
     var wrongAns = 0
-    var totalAns = 0
+    var totalAns = $(".totalans")
     var timer = 15
     var interval;
     var timerOn = false
@@ -46,7 +97,6 @@ $(document).ready(function() {
     var nextQTime;
     $("#nextQ").hide()
     $("#reset").hide()
-    
     //create timer
 
     //start game on button click
@@ -65,7 +115,19 @@ $(document).ready(function() {
             holder.push(myQuestions)
         }
 
+        $("#nextQ").on("click", function() {
+            $("#nextQ").show('fast')
+            $("#gifImage").empty()
+            $("#answerblock").empty()
+            showQuestion()
+            timer = 15
+            startTimer()
+            return
+        })
+
         function showQuestion () {
+            $("#myanswer").empty()
+
             //chooses random question from questions array
             randQuest = Math.floor(Math.random() * myQuestions.length)
             // console.log(randQuest)
@@ -83,7 +145,8 @@ $(document).ready(function() {
                     userChoice.attr("data-guessvalue", i)
                     $("#answerblock").append(userChoice)
                 }
-                console.log(activeOptions)
+                // console.log(activeOptions)
+                console.log(activeQuest)
                 // console.log(userChoice)
     
             $(".answerChoice").on("click", function() {
@@ -99,8 +162,7 @@ $(document).ready(function() {
                     $("#myanswer").html("<h3>Correct!</h3>")
                     $("#gifImage").html("<img src='"+ activeQuest.gif + "' >")
                     $("#answerblock").empty()
-                    //show object gif 
-                    // $("#gifImage").html(activeQuest.gif)
+                    return
                 }
     
                 else {
@@ -116,34 +178,27 @@ $(document).ready(function() {
             
             if (totalAns === 10) {
                 stopTimer()
-                
+                $("#wrongAns").html(wrongAns)
+                $("#correctAns").html(correctAns)
             }
 
-            $("#nextQ").on("click", function() {
-                $("#nextQ").show('fast')
-                $("#gifImage").empty()
-                $("#answerblock").empty()
-                showQuestion()
-                timer = 15
-                startTimer()
-            })
-    
             $("#reset").on("click", function() {
                 $("#reset").hide('fast')
                 $("#start").show('fast')
                 $("#question").empty()
                 $("#myanswer").empty()
-                $("#myAnswer").empty()
                 $("#gifImage").empty()
                 correctAns = 0
                 wrongAns = 0
-                totalAns = 0
+                // totalAns = 0
                 for (var i =0; i < holder.length; i++) {
                     myQuestions.push(holder[i])
                 }
             })
         }
+        // console.log(totalAns)
     })
+
 
     function decrement() {
         timer--
