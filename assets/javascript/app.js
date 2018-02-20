@@ -2,6 +2,25 @@ $(document).ready(function() {
 
     var myQuestions = [
         {
+            question : "In 'One Punch Man', what hero class does Saitama test into?",
+            options : [
+                "Class C", "Class B", "Class S", "Class A"
+            ],
+            ansVal : 0,
+            answer : 'Class C',
+            note : "Although he's unarguably the strongers character in the series, he did poorly on the written exam!",
+            gif : "assets/images/saitama.gif"
+        },
+        {
+            question : "What is the name of the dragon in Dragon Ball Z?",
+            options : [
+                "Shenron", "Dr. Seusse", "Goku", "ChiChi"
+            ],
+            ansVal : 0,
+            answer : 'Shenron',
+            gif : "assets/images/shenron.gif"
+        },
+        {
             question : "What is Gintamas go-to weapon of choice?",
             options : [
                 "His fists", "Pistol", "A wooden sword", "Rubber duck"
@@ -56,7 +75,7 @@ $(document).ready(function() {
             gif : "assets/images/inuyasha.gif",
         },
         {
-            question : "In 'Attack on Titan', how did Erin's mom dye?",
+            question : "In 'Attack on Titan', how did Erin's mom die?",
             options : [
                 "She was eaten", "She ate bad meat", "She didn't", "Nobody Knows"
             ],
@@ -99,7 +118,46 @@ $(document).ready(function() {
             ansVal : 3,
             answer : "Ramen from Ramen Ichiraku",
             gif : "assets/images/ramen.gif"
-        }
+        },
+        {
+            question : "In 'Full Metal Alchemist-Brotherhood', which limbs did Edward Elric lose when he was young?",
+            options : [
+                "His arms", "His legs", "Left arm, Right leg", "Right arm, Left leg",
+            ],
+            ansVal : 3,
+            answer : "Right arm, Left leg",
+            gif : "assets/images/FMAbrotherhood.gif"
+        },
+        {
+            question : "In 'One Punch Man' what is Saitama wearing when he slaps the mosquito villain and saves Genos?",
+            options : [
+                "His work uniform", "His hero uniform", "Boxers", "Nothing"
+            ],
+            ansVal : 3,
+            answer : "Nothing",
+            note : "Everything got burned off during the fight!",
+            gif : "assets/images/saitamaslap.gif"
+        },
+        {
+            question : "What's the name of the oversized dog in 'Gintama'?",
+            options : [
+                "Sayan", "Sadaharu", "Jump", "Gohan"
+            ],
+            ansVal : 1,
+            answer : "Sadaharu",
+            note : "Before he joined the 'Odd Jobs' team, he was a God Dog!",
+            gif : "assets/images/sadaharu.gif"
+        },
+        {
+            question : "In Bleach, what is the name of Ichigo's Zanpakuto spirit?",
+            options : [
+                "Strawberry", "Mikasa", "Zangetsu", "Rukia"
+            ],
+            ansVal : 2,
+            answer : "Zangetsu",
+            note : "He has many forms...Tensa, Hollow, Quincy...",
+            gif : "assets/images/zangetsu.gif"
+        },
     ]
 
     var userGuess = ''
@@ -135,12 +193,13 @@ $(document).ready(function() {
         showQuestion()
         //starts timer at 15 seconds
         startTimer()
-        // console.log("chao")
-        newArray = []
+        // // console.log("chao")
+        // if (myQuestions[randQuest] === activeQuest) {
+        //     myQuestions.splice(i,1)
+        //     break
+        // }   
         //goes through all questions
-        for(var i = 0; i < myQuestions.length; i++) {
-            holder.push(myQuestions)
-        }
+
 
         $("#nextQ").on("click", function() {
             wrongAns++
@@ -174,14 +233,14 @@ $(document).ready(function() {
             totalAns++
             $(".totalans").html("Question #" + totalAns)
             //chooses random question from questions array
-            randQuest = Math.floor(Math.random() * myQuestions.length)
-            // console.log(randQuest)
-            activeQuest = myQuestions[randQuest]
-            for(var i = 0; i < myQuestions.length; i++) {
-                holder.push(myQuestions)
+            for (var j = 0; j < myQuestions.length; j++) {
+                randQuest = Math.floor(Math.random() * myQuestions.length)
+                activeQuest = myQuestions[randQuest]
             }
             //active question shows up inside questions id
             $("#question").html("<h2>" + activeQuest.question + "</h2>")
+
+            holder.push(randQuest)
                 // console.log("quest")
                 // $(".options").html(questOptions)
                 var activeOptions = activeQuest.options
@@ -209,7 +268,8 @@ $(document).ready(function() {
                     $("#nextQ").hide('1000')
                     $("#myanswer").html("<h3>Correct!</h3>")
                     $("#gifImage").html("<img src='"+ activeQuest.gif + "' >")
-                    $("#answerblock").empty()                    
+                    $("#answerblock").empty()   
+          
                     //set timeout only if they don't press next question
                     setTimeout (function (){
                         $("#gifImage").empty()
@@ -238,7 +298,7 @@ $(document).ready(function() {
                 }
             })
             
-            if (totalAns === 11) {
+            if (totalAns === 6) {
                 stopTimer()
                 $("#timer").empty()
                 $("#start").show('fast')
@@ -252,22 +312,8 @@ $(document).ready(function() {
                 $("#wrongans").html("Wrong Answers: " + wrongAns)
                 $(".options").html("PLAY AGAIN!")
             }
-
-            // $("#reset").on("click", function() {
-            //     $("#reset").hide('fast')
-            //     $("#start").show('fast')
-            //     $("#question").empty()
-            //     $("#myanswer").empty()
-            //     $("#gifImage").empty()
-            //     correctAns = 0
-            //     wrongAns = 0
-            //     for (var i =0; i < holder.length; i++) {
-            //         myQuestions.push(holder[i])
-            //     }
-            // })
         }
     })
-
 
     function decrement() {
         timer--
